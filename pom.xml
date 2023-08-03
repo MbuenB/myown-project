@@ -95,7 +95,7 @@
 	    <repository>
 	      <id>github</id>
 	      <name></name>
-	      <url>https://maven.pkg.github.com/MbuenB/deploy-eco</url>
+	      <url>https://maven.pkg.github.com/MbuenB/myown-project</url>
 	    </repository>
 	    
 	    
