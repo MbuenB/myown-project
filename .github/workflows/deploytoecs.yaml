@@ -1,0 +1,25 @@
+name: Deploy to ECS
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  builddeploytoecs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: checkout code from repo
+        uses: actions/checkout@v3
+
+      - name: setup java and maven environment
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: package with maven
+        run: mvn package
