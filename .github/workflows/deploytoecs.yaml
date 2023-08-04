@@ -12,22 +12,22 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: checkout code from repo
+       - name: checkout code from repo
         uses: actions/checkout@v3
 
-      - name: setup java and maven environment
+       - name: setup java and maven environment
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '11'
-      - name: package with maven
+       - name: package with maven
         run: mvn package
 
-      - name: Upload to github packages
+       - name: Upload to github packages
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: authenticate to aws account
+       - name: authenticate to aws account
         uses: aws-actions/configure-aws-credentials@v1
         with:
          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
