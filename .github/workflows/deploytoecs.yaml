@@ -1,3 +1,4 @@
+
 name: Deploy to ECS
 on:
   push:
@@ -20,27 +21,28 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+
       - name: package with maven
         run: mvn package
 
-      - name: Upload to github packages
-        run: mvn --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: authenticate to aws account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-         aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
-         aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
-         aws-region: ${{secrets.AWS_REGION}}
-       - name: Login to Amazon ECR
-         id: login-ecr
-         uses: aws-actions/amazon-ecr-login@v1
- 
-       - name: Build, tag and push
-         id: build-image
-         env:
-           REGISTRY: ${{steps.login-ecr.outputs.registry}}
-           REPOSITORY: mbuenrepo
-           IMAGE_TAG: ${{github.sha}}
-     
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag and push
+        id: build-image
+        env:
+          REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          REPOSITORY: mbuenrepo
+          IMAGE_TAG: ${{github.sha}}
+        run: |
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
