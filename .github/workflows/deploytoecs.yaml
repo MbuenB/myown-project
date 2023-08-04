@@ -22,8 +22,9 @@ jobs:
           java-version: '11'
       - name: package with maven
         run: mvn package
+
       - name: Upload to github packages
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
+     
