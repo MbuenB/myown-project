@@ -35,14 +35,3 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, tag and push
-        id: build-image
-        env:
-          REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          REPOSITORY: mbuenrepo
-          IMAGE_TAG: ${{github.sha}}
-        run: |
-            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-            echo "image=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
