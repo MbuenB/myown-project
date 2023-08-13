@@ -21,6 +21,10 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+      - name: upload to github packages
+        run: mvn --batch-mode deploy
+        env: 
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: package with maven
         run: mvn package
